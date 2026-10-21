@@ -377,7 +377,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Konfigurasi Firebase Project Rerie (Sudah Terhubung otomatis!)
+    // Konfigurasi Firebase Project Rerie
     const firebaseConfig = {
       apiKey: "AIzaSyCNan01ZDXtmDjx6VutNobsV0NoutuXCd0",
       authDomain: "mochi-study-nook.firebaseapp.com",
@@ -391,10 +391,15 @@
     const db = getFirestore(app);
     const docId = "user_rerie_main";
 
+    // Helper untuk mengambil format tanggal persis Timezone Jakarta (WIB)
+    function getJakartaDateString() {
+      return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' }); // Output: YYYY-MM-DD
+    }
+
     let appState = {
       streak: 0,
       lastCheckinDate: null,
-      lastActiveDate: new Date().toDateString(),
+      lastActiveDate: getJakartaDateString(),
       tasks: { 'chk-inggris': false, 'chk-jerman': false, 'chk-kursus': false, 'chk-va': false },
       courseName: "",
       courseGoal: "",
@@ -412,11 +417,11 @@
           const cloudData = snap.data();
           appState = Object.assign(appState, cloudData);
 
-          // Automated Day Reset Logic
-          const today = new Date().toDateString();
-          if (appState.lastActiveDate !== today) {
+          // Automated Day Reset Logic berbasis Waktu Jakarta (WIB)
+          const todayJakarta = getJakartaDateString();
+          if (appState.lastActiveDate !== todayJakarta) {
             appState.tasks = { 'chk-inggris': false, 'chk-jerman': false, 'chk-kursus': false, 'chk-va': false };
-            appState.lastActiveDate = today;
+            appState.lastActiveDate = todayJakarta;
             await saveDataToCloud();
           }
         }
@@ -465,15 +470,15 @@
       if (tabId === 'analytics') renderChart();
     }
 
-    // Daily Checkin
+    // Daily Checkin dengan Waktu Jakarta
     window.doDailyCheckin = async function() {
-      const today = new Date().toDateString();
-      if (appState.lastCheckinDate === today) {
+      const todayJakarta = getJakartaDateString();
+      if (appState.lastCheckinDate === todayJakarta) {
         alert("Kamu sudah melakukan absen hari ini! ✨");
         return;
       }
       appState.streak += 1;
-      appState.lastCheckinDate = today;
+      appState.lastCheckinDate = todayJakarta;
       document.getElementById('streakCount').innerText = appState.streak;
       await saveDataToCloud();
       alert("Hore! Absen berhasil. Streak kamu: " + appState.streak + " hari! 🔥");
