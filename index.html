@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mochi Study Space 🐰✨ | Personal Learning Dashboard</title>
+  <title>Mochi Study Space 🐰✨ | Cloud Learning Dashboard</title>
   <!-- Google Fonts & Tailwind CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,7 +95,6 @@
   <header class="max-w-6xl mx-auto mb-6">
     <div class="card-cute p-6 flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-4">
-        <!-- SVG Maskot Mochi -->
         <div class="w-16 h-16 bg-pastelPink rounded-full flex items-center justify-center shadow-inner relative flex-shrink-0">
           <svg class="w-12 h-12 text-darkPink" viewBox="0 0 100 100" fill="none">
             <ellipse cx="50" cy="55" rx="35" ry="30" fill="#FFF" stroke="#D87093" stroke-width="4"/>
@@ -112,11 +111,11 @@
         </div>
         <div>
           <h1 class="text-2xl md:text-3xl font-extrabold text-darkPink font-quicksand">Mochi Study Space 🐰✨</h1>
-          <p id="mochiGreeting" class="text-sm font-semibold text-cuteText opacity-80">Halo Rerie! Siap belajar 2 jam hari ini untuk capai impianmu?</p>
+          <p id="mochiGreeting" class="text-sm font-semibold text-cuteText opacity-80">Halo Rerie! Siap capai impianmu dengan Disciplined Elegance?</p>
         </div>
       </div>
 
-      <!-- Counter Streak & Actions -->
+      <!-- Counter Streak & Cloud Status -->
       <div class="flex flex-wrap items-center gap-3">
         <div class="bg-pastelYellow px-4 py-2 rounded-2xl flex items-center gap-2 border border-yellow-200">
           <span class="text-2xl">🔥</span>
@@ -130,10 +129,8 @@
           <span>✨</span> Absen Hari Ini
         </button>
 
-        <div class="flex gap-2">
-          <button onclick="exportData()" title="Backup Data" class="p-2 bg-pastelPurple hover:bg-purple-200 rounded-full text-cutePurple font-bold">💾</button>
-          <button onclick="importData()" title="Impor Data" class="p-2 bg-pastelMint hover:bg-emerald-200 rounded-full text-emerald-700 font-bold">📥</button>
-          <input type="file" id="importFile" class="hidden" onchange="processImport(event)">
+        <div id="cloudStatus" class="text-xs px-3 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full">
+          ☁️ Cloud Connected
         </div>
       </div>
     </div>
@@ -167,7 +164,6 @@
     <!-- 1. STUDY PLAN TAB -->
     <section id="sec-plan" class="tab-content block">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Target 4 Sesi Harian -->
         <div class="card-cute p-6 md:col-span-2">
           <h2 class="text-xl font-bold text-darkPink mb-4 flex items-center gap-2">
             <span>⏱️</span> Target Rutinitas Belajar (Total: 2 Jam)
@@ -206,7 +202,6 @@
             </label>
           </div>
 
-          <!-- Overall Daily Progress -->
           <div class="mt-6">
             <div class="flex justify-between text-xs font-bold text-cuteText mb-2">
               <span>Progress Belajar Hari Ini</span>
@@ -218,10 +213,10 @@
           </div>
         </div>
 
-        <!-- Timer Pomodoro 30 Menit -->
+        <!-- Timer Pomodoro -->
         <div class="card-cute p-6 flex flex-col items-center justify-center text-center">
           <h3 class="font-bold text-darkPink mb-1">⏱️ Timer Sesi 30 Menit</h3>
-          <p class="text-xs text-gray-500 mb-4">Fokus tanpa distraksi selama 30 menit!</p>
+          <p class="text-xs text-gray-500 mb-4">Fokus tanpa distraksi!</p>
 
           <div class="w-36 h-36 rounded-full bg-pastelPink/40 border-4 border-pastelPinkDark flex items-center justify-center my-2 shadow-inner">
             <span id="timerDisplay" class="text-3xl font-extrabold text-darkPink font-mono">30:00</span>
@@ -244,11 +239,8 @@
           <a href="https://www.bbc.co.uk/learningenglish/" target="_blank" class="text-xs btn-cute px-4 py-2 flex items-center gap-1">📺 BBC Learning English ↗</a>
         </div>
 
-        <!-- Shadowing Lab -->
         <div class="bg-white p-4 rounded-2xl border border-pink-100 mb-6">
           <h3 class="font-bold text-sm text-purple-700 mb-2">🗣️ Interactive Shadowing Practice</h3>
-          <p class="text-xs text-gray-600 mb-3">Dengarkan dan ikuti pengucapan kalimat bahasa Inggris profesional berikut dengan suara lantang:</p>
-          
           <div class="space-y-2">
             <div class="p-3 bg-pink-50/50 rounded-xl flex items-center justify-between">
               <div>
@@ -257,7 +249,6 @@
               </div>
               <button onclick="speakText('I would be happy to assist you with scheduling that meeting.')" class="bg-pink-200 p-2 rounded-full hover:bg-pink-300">🔊</button>
             </div>
-
             <div class="p-3 bg-pink-50/50 rounded-xl flex items-center justify-between">
               <div>
                 <p class="text-sm font-semibold">"Please find the attached document for your review."</p>
@@ -268,8 +259,7 @@
           </div>
         </div>
 
-        <!-- Flashcards B2 -->
-        <h3 class="font-bold text-sm text-darkPink mb-3">🎴 Flashcard Vocab B2 (Klik untuk balik)</h3>
+        <h3 class="font-bold text-sm text-darkPink mb-3">🎴 Flashcard Vocab B2</h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div onclick="this.classList.toggle('flipped')" class="flashcard card-cute p-6 cursor-pointer text-center h-32 flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-100">
             <div class="flashcard-inner w-full">
@@ -301,11 +291,8 @@
           <a href="https://learngerman.dw.com/de/nicos-weg/c-36519789" target="_blank" class="text-xs bg-purple-200 hover:bg-purple-300 px-4 py-2 rounded-full font-bold text-cutePurple">📺 Nicos Weg (DW) ↗</a>
         </div>
 
-        <!-- Quiz Der / Die / Das -->
         <div class="bg-white p-5 rounded-2xl border border-purple-100 mb-6">
-          <h3 class="font-bold text-sm text-cutePurple mb-2">🧩 Mini Quiz: Der, Die, oder Das?</h3>
-          <p class="text-xs text-gray-600 mb-4">Pilih artikel kata benda yang tepat di bawah ini:</p>
-
+          <h3 class="font-bold text-sm text-cutePurple mb-2">🧩 Mini Quiz: Der, Die, atau Das?</h3>
           <div class="space-y-4">
             <div class="p-3 bg-purple-50/50 rounded-xl">
               <p class="text-sm font-bold mb-2">1. ___ Tisch (Meja)</p>
@@ -315,7 +302,6 @@
                 <button onclick="checkAnswer(this, false)" class="px-3 py-1 bg-white border border-purple-200 rounded-lg text-xs font-bold hover:bg-purple-100">das</button>
               </div>
             </div>
-
             <div class="p-3 bg-purple-50/50 rounded-xl">
               <p class="text-sm font-bold mb-2">2. ___ Frau (Wanita)</p>
               <div class="flex gap-2">
@@ -333,29 +319,25 @@
     <section id="sec-course" class="tab-content hidden space-y-6">
       <div class="card-cute p-6">
         <h2 class="text-xl font-bold text-emerald-700 mb-2">🎓 Target & Modul Kursus Mandiri</h2>
-        <p class="text-xs text-gray-600 mb-6">Tentukan kursus pilihanmu (misal: Alison, Coursera, YouTube) lalu catat modul yang diselesaikan di sini!</p>
+        <p class="text-xs text-gray-600 mb-6">Catat progres kursus mandirimu di sini!</p>
 
-        <!-- Form Input Kursus -->
         <div class="bg-white p-4 rounded-2xl border border-emerald-100 mb-6 space-y-3">
           <div>
-            <label class="block text-xs font-bold text-gray-600 mb-1">Nama Kursus yang Sedang Diikuti:</label>
-            <input type="text" id="courseNameInput" placeholder="Misal: Working as a Virtual Assistant (Alison)" oninput="saveCourseInfo()" class="w-full p-2.5 bg-emerald-50/40 border border-emerald-200 rounded-xl text-sm font-semibold">
+            <label class="block text-xs font-bold text-gray-600 mb-1">Nama Kursus:</label>
+            <input type="text" id="courseNameInput" placeholder="Misal: Working as a Virtual Assistant" oninput="saveDataToCloud()" class="w-full p-2.5 bg-emerald-50/40 border border-emerald-200 rounded-xl text-sm font-semibold">
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-600 mb-1">Target / Goal Utama Kursus Ini:</label>
-            <input type="text" id="courseGoalInput" placeholder="Misal: Paham cara kelola inbox email & bikin laporan kerja" oninput="saveCourseInfo()" class="w-full p-2.5 bg-emerald-50/40 border border-emerald-200 rounded-xl text-sm font-semibold">
+            <label class="block text-xs font-bold text-gray-600 mb-1">Target / Goal Utama:</label>
+            <input type="text" id="courseGoalInput" placeholder="Misal: Paham cara kelola inbox email" oninput="saveDataToCloud()" class="w-full p-2.5 bg-emerald-50/40 border border-emerald-200 rounded-xl text-sm font-semibold">
           </div>
         </div>
 
-        <!-- Dynamic Checklist Modul Kursus -->
         <div>
           <div class="flex justify-between items-center mb-3">
-            <h3 class="font-bold text-sm text-emerald-800">📋 Daftar Bab / Modul Kursus:</h3>
+            <h3 class="font-bold text-sm text-emerald-800">📋 Daftar Modul:</h3>
             <button onclick="addCourseModule()" class="text-xs bg-emerald-200 hover:bg-emerald-300 font-bold px-3 py-1.5 rounded-xl text-emerald-800">+ Tambah Modul</button>
           </div>
-          <div id="courseModuleList" class="space-y-2">
-            <!-- Rendered by JS -->
-          </div>
+          <div id="courseModuleList" class="space-y-2"></div>
         </div>
       </div>
     </section>
@@ -364,19 +346,16 @@
     <section id="sec-va" class="tab-content hidden space-y-6">
       <div class="card-cute p-6">
         <h2 class="text-xl font-bold text-blue-700 mb-4">💼 Virtual Assistant Practice Lab</h2>
-        
         <div class="bg-white p-4 rounded-2xl border border-blue-100 mb-6">
           <h3 class="font-bold text-sm text-blue-800 mb-2">✉️ Email Drafting Exercise</h3>
-          <p class="text-xs text-gray-600 mb-3">Salin template email profesional di bawah ini untuk latihan mengirim email ke klien:</p>
           <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200 text-xs font-mono text-gray-700 relative">
             <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Template tersalin!')" class="absolute top-2 right-2 bg-blue-200 px-2 py-1 rounded text-xs font-bold">Copy</button>
-            <span>Subject: Weekly Administrative Summary & Updates<br><br>Hi [Client Name],<br><br>I hope you are having a productive week! Here is a brief update on the tasks completed this week...</span>
+            <span>Subject: Weekly Administrative Summary & Updates<br><br>Hi [Client Name],<br><br>I hope you are having a productive week! Here is a brief update on tasks completed...</span>
           </div>
         </div>
-
         <div>
           <h3 class="font-bold text-sm text-blue-800 mb-2">📝 Catatan & Jurnal Latihan VA</h3>
-          <textarea id="vaJournalText" oninput="saveVAJournal()" rows="4" placeholder="Tuliskan catatan latihan, istilah baru, atau ringkasan materi VA kamu di sini..." class="w-full p-3 bg-white border border-blue-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+          <textarea id="vaJournalText" oninput="saveDataToCloud()" rows="4" placeholder="Tuliskan catatan latihan VA kamu di sini..." class="w-full p-3 bg-white border border-blue-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
         </div>
       </div>
     </section>
@@ -393,12 +372,30 @@
 
   </main>
 
-  <script>
-    // --- LOCALSTORAGE & STATE MANAGEMENT ---
+  <!-- FIREBASE SDK & APP LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Konfigurasi Firebase Project Rerie (Sudah Terhubung otomatis!)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCNan01ZDXtmDjx6VutNobsV0NoutuXCd0",
+      authDomain: "mochi-study-nook.firebaseapp.com",
+      projectId: "mochi-study-nook",
+      storageBucket: "mochi-study-nook.firebasestorage.app",
+      messagingSenderId: "674987379127",
+      appId: "1:674987379127:web:613470712285d5c714c032"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const docId = "user_rerie_main";
+
     let appState = {
       streak: 0,
       lastCheckinDate: null,
-      tasks: {},
+      lastActiveDate: new Date().toDateString(),
+      tasks: { 'chk-inggris': false, 'chk-jerman': false, 'chk-kursus': false, 'chk-va': false },
       courseName: "",
       courseGoal: "",
       courseModules: [
@@ -408,19 +405,46 @@
       vaJournal: ""
     };
 
-    function loadState() {
-      const saved = localStorage.getItem('mochiStudyState');
-      if (saved) {
-        try { appState = Object.assign(appState, JSON.parse(saved)); } catch(e){}
+    async function loadDataFromCloud() {
+      try {
+        const snap = await getDoc(doc(db, "studyData", docId));
+        if (snap.exists()) {
+          const cloudData = snap.data();
+          appState = Object.assign(appState, cloudData);
+
+          // Automated Day Reset Logic
+          const today = new Date().toDateString();
+          if (appState.lastActiveDate !== today) {
+            appState.tasks = { 'chk-inggris': false, 'chk-jerman': false, 'chk-kursus': false, 'chk-va': false };
+            appState.lastActiveDate = today;
+            await saveDataToCloud();
+          }
+        }
+        syncUI();
+      } catch (err) {
+        console.error("Gagal memuat cloud:", err);
+        document.getElementById('cloudStatus').innerText = "⚠️ Offline Mode";
+        document.getElementById('cloudStatus').className = "text-xs px-3 py-1 bg-amber-100 text-amber-800 font-bold rounded-full";
       }
-      
-      // Sync UI
+    }
+
+    async function saveDataToCloud() {
+      try {
+        await setDoc(doc(db, "studyData", docId), appState);
+      } catch (err) {
+        console.error("Gagal menyimpan ke cloud:", err);
+      }
+      updateDailyProgress();
+    }
+
+    window.saveDataToCloud = saveDataToCloud;
+
+    function syncUI() {
       document.getElementById('streakCount').innerText = appState.streak;
       document.getElementById('courseNameInput').value = appState.courseName || "";
       document.getElementById('courseGoalInput').value = appState.courseGoal || "";
       document.getElementById('vaJournalText').value = appState.vaJournal || "";
 
-      // Sync Checkboxes
       Object.keys(appState.tasks).forEach(id => {
         const el = document.getElementById(id);
         if (el) el.checked = appState.tasks[id];
@@ -430,13 +454,8 @@
       updateDailyProgress();
     }
 
-    function saveState() {
-      localStorage.setItem('mochiStudyState', JSON.stringify(appState));
-      updateDailyProgress();
-    }
-
     // Tab Switcher
-    function switchTab(tabId) {
+    window.switchTab = function(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
       
@@ -446,27 +465,25 @@
       if (tabId === 'analytics') renderChart();
     }
 
-    // Daily Checkin & Streak
-    function doDailyCheckin() {
+    // Daily Checkin
+    window.doDailyCheckin = async function() {
       const today = new Date().toDateString();
       if (appState.lastCheckinDate === today) {
-        alert("Kamu sudah melakukan absen hari ini! Terus semangat ya! ✨");
+        alert("Kamu sudah melakukan absen hari ini! ✨");
         return;
       }
-      
       appState.streak += 1;
       appState.lastCheckinDate = today;
       document.getElementById('streakCount').innerText = appState.streak;
-      saveState();
-      alert("Hore! Absen berhasil. Streak belajar kamu bertambah menjadi " + appState.streak + " hari! 🔥");
+      await saveDataToCloud();
+      alert("Hore! Absen berhasil. Streak kamu: " + appState.streak + " hari! 🔥");
     }
 
-    // Tasks & Progress
-    function toggleTask(id) {
+    window.toggleTask = async function(id) {
       const el = document.getElementById(id);
       if (el) {
         appState.tasks[id] = el.checked;
-        saveState();
+        await saveDataToCloud();
       }
     }
 
@@ -474,7 +491,6 @@
       const ids = ['chk-inggris', 'chk-jerman', 'chk-kursus', 'chk-va'];
       let done = 0;
       ids.forEach(id => { if (appState.tasks[id]) done++; });
-      
       const hours = (done * 0.5).toFixed(1);
       const percent = Math.round((done / 4) * 100);
 
@@ -482,17 +498,9 @@
       document.getElementById('dailyProgressBar').style.width = percent + '%';
     }
 
-    // Course Modules
-    function saveCourseInfo() {
-      appState.courseName = document.getElementById('courseNameInput').value;
-      appState.courseGoal = document.getElementById('courseGoalInput').value;
-      saveState();
-    }
-
-    function renderCourseModules() {
+    window.renderCourseModules = function() {
       const container = document.getElementById('courseModuleList');
       container.innerHTML = '';
-      
       appState.courseModules.forEach((mod, index) => {
         const div = document.createElement('div');
         div.className = "flex items-center justify-between p-3 bg-white rounded-xl border border-emerald-100";
@@ -507,45 +515,36 @@
       });
     }
 
-    function addCourseModule() {
+    window.addCourseModule = async function() {
       const text = prompt("Masukkan nama modul / bab kursus:");
       if (text) {
         appState.courseModules.push({ text: text, done: false });
-        saveState();
+        await saveDataToCloud();
         renderCourseModules();
       }
     }
 
-    function toggleModule(index) {
+    window.toggleModule = async function(index) {
       appState.courseModules[index].done = !appState.courseModules[index].done;
-      saveState();
+      await saveDataToCloud();
       renderCourseModules();
     }
 
-    function removeModule(index) {
+    window.removeModule = async function(index) {
       appState.courseModules.splice(index, 1);
-      saveState();
+      await saveDataToCloud();
       renderCourseModules();
     }
 
-    function saveVAJournal() {
-      appState.vaJournal = document.getElementById('vaJournalText').value;
-      saveState();
-    }
-
-    // Audio Speech
-    function speakText(text) {
+    window.speakText = function(text) {
       if ('speechSynthesis' in window) {
         const msg = new SpeechSynthesisUtterance(text);
         msg.lang = 'en-US';
         window.speechSynthesis.speak(msg);
-      } else {
-        alert("Browser kamu tidak mendukung Speech Synthesis.");
       }
     }
 
-    // Quiz Check
-    function checkAnswer(btn, isCorrect) {
+    window.checkAnswer = function(btn, isCorrect) {
       if (isCorrect) {
         btn.className = "px-3 py-1 bg-emerald-400 text-white rounded-lg text-xs font-bold";
         alert("Richtig! (Benar sekali) 🎉");
@@ -555,11 +554,10 @@
       }
     }
 
-    // Timer Logic
+    // Timer
     let timerInterval = null;
-    let timerSeconds = 1800; // 30 mins
-
-    function startTimer() {
+    let timerSeconds = 1800;
+    window.startTimer = function() {
       if (timerInterval) return;
       timerInterval = setInterval(() => {
         if (timerSeconds > 0) {
@@ -572,62 +570,19 @@
         }
       }, 1000);
     }
-
-    function pauseTimer() {
-      clearInterval(timerInterval);
-      timerInterval = null;
-    }
-
-    function resetTimer() {
-      pauseTimer();
-      timerSeconds = 1800;
-      updateTimerDisplay();
-    }
-
+    window.pauseTimer = function() { clearInterval(timerInterval); timerInterval = null; }
+    window.resetTimer = function() { window.pauseTimer(); timerSeconds = 1800; updateTimerDisplay(); }
     function updateTimerDisplay() {
       const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
       const s = (timerSeconds % 60).toString().padStart(2, '0');
       document.getElementById('timerDisplay').innerText = `${m}:${s}`;
     }
 
-    // Export & Import
-    function exportData() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `Mochi_Study_Space_Backup.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function importData() {
-      document.getElementById('importFile').click();
-    }
-
-    function processImport(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          appState = JSON.parse(e.target.result);
-          saveState();
-          loadState();
-          alert("Data berhasil diimpor! ✨");
-        } catch (err) {
-          alert("File JSON tidak valid!");
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    // Chart.js
+    // Chart
     let myChart = null;
     function renderChart() {
       const ctx = document.getElementById('progressChart').getContext('2d');
       if (myChart) myChart.destroy();
-
       const ids = ['chk-inggris', 'chk-jerman', 'chk-kursus', 'chk-va'];
       const data = ids.map(id => appState.tasks[id] ? 100 : 0);
 
@@ -642,15 +597,11 @@
             borderRadius: 12
           }]
         },
-        options: {
-          scales: { y: { beginAtZero: true, max: 100 } },
-          plugins: { legend: { display: false } }
-        }
+        options: { scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
       });
     }
 
-    // Init
-    window.onload = loadState;
+    window.onload = loadDataFromCloud;
   </script>
 </body>
 </html>
