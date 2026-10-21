@@ -3,610 +3,265 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mochi Study Space 🐰✨ | Cloud Learning Dashboard</title>
-  <!-- Google Fonts & Tailwind CSS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            pastelPink: '#FFD1DC',
-            pastelPinkDark: '#FFB6C1',
-            pastelPurple: '#E6E6FA',
-            pastelPeach: '#FFDAB9',
-            pastelYellow: '#FFFACD',
-            pastelMint: '#E0F8E7',
-            pastelBlue: '#E0F7FA',
-            darkPink: '#D87093',
-            cutePurple: '#9370DB',
-            cuteText: '#5A4A57'
-          },
-          fontFamily: {
-            nunito: ['Nunito', 'sans-serif'],
-            quicksand: ['Quicksand', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
+  <title>Mochi Study Space 🍡</title>
+  
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style>
+    :root {
+      --bg-color: #fffaf0;
+      --card-bg: #ffffff;
+      --primary: #ffb7c5;
+      --primary-hover: #ff9eaa;
+      --text: #4a4a4a;
+      --accent: #b5ead7;
+    }
+
     body {
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #FFF0F5 0%, #E6E6FA 50%, #E0F8E7 100%);
-      color: #5A4A57;
-      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
     }
-    .card-cute {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 24px;
-      box-shadow: 0 10px 25px rgba(216, 112, 147, 0.12);
-      backdrop-filter: blur(8px);
-      border: 2px solid #FFF0F5;
-      transition: all 0.3s ease;
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
     }
-    .card-cute:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(216, 112, 147, 0.18);
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
-    .btn-cute {
-      background: linear-gradient(135deg, #FFB6C1 0%, #FFD1DC 100%);
-      color: #5A4A57;
-      font-weight: 700;
-      border-radius: 9999px;
-      box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
-      transition: all 0.2s ease;
+
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #ff7b9c;
     }
-    .btn-cute:hover {
-      transform: scale(1.04);
-      box-shadow: 0 6px 16px rgba(255, 182, 193, 0.6);
+
+    .status-badge {
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: #e0e0e0;
+      color: #666;
+      font-weight: bold;
     }
-    .nav-tab.active {
-      background-color: #FFB6C1 !important;
-      color: #5A4A57 !important;
-      font-weight: 800;
-      box-shadow: 0 4px 10px rgba(255, 182, 193, 0.5);
+
+    .status-badge.connected {
+      background: #d4edda;
+      color: #155724;
     }
-    .flashcard {
-      perspective: 1000px;
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
     }
-    .flashcard-inner {
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #ffe3e8;
+      border-radius: 12px;
+      outline: none;
+      font-size: 1rem;
     }
-    .flashcard.flipped .flashcard-inner {
-      transform: rotateY(180deg);
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
     }
-    .flashcard-front, .flashcard-back {
-      backface-visibility: hidden;
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
     }
-    .flashcard-back {
-      transform: rotateY(180deg);
+
+    button:hover {
+      background: var(--primary-hover);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      background: #fff5f7;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    li.completed span {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+
+    .delete-btn {
+      background: transparent;
+      color: #ff6b6b;
+      padding: 4px 8px;
+    }
+
+    .delete-btn:hover {
+      background: #ffe3e3;
     }
   </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-  <!-- Header & Maskot -->
-  <header class="max-w-6xl mx-auto mb-6">
-    <div class="card-cute p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="flex items-center gap-4">
-        <div class="w-16 h-16 bg-pastelPink rounded-full flex items-center justify-center shadow-inner relative flex-shrink-0">
-          <svg class="w-12 h-12 text-darkPink" viewBox="0 0 100 100" fill="none">
-            <ellipse cx="50" cy="55" rx="35" ry="30" fill="#FFF" stroke="#D87093" stroke-width="4"/>
-            <ellipse cx="35" cy="25" rx="8" ry="20" fill="#FFF" stroke="#D87093" stroke-width="4"/>
-            <ellipse cx="35" cy="25" rx="4" ry="12" fill="#FFD1DC"/>
-            <ellipse cx="65" cy="25" rx="8" ry="20" fill="#FFF" stroke="#D87093" stroke-width="4"/>
-            <ellipse cx="65" cy="25" rx="4" ry="12" fill="#FFD1DC"/>
-            <circle cx="40" cy="50" r="4" fill="#5A4A57"/>
-            <circle cx="60" cy="50" r="4" fill="#5A4A57"/>
-            <path d="M 46 58 Q 50 62 54 58" stroke="#D87093" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <ellipse cx="32" cy="56" rx="5" ry="3" fill="#FFB6C1" opacity="0.6"/>
-            <ellipse cx="68" cy="56" rx="5" ry="3" fill="#FFB6C1" opacity="0.6"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-2xl md:text-3xl font-extrabold text-darkPink font-quicksand">Mochi Study Space 🐰✨</h1>
-          <p id="mochiGreeting" class="text-sm font-semibold text-cuteText opacity-80">Halo Rerie! Siap capai impianmu dengan Disciplined Elegance?</p>
-        </div>
-      </div>
-
-      <!-- Counter Streak & Cloud Status -->
-      <div class="flex flex-wrap items-center gap-3">
-        <div class="bg-pastelYellow px-4 py-2 rounded-2xl flex items-center gap-2 border border-yellow-200">
-          <span class="text-2xl">🔥</span>
-          <div>
-            <p class="text-xs font-bold text-gray-500 uppercase">Streak Belajar</p>
-            <p class="text-lg font-extrabold text-amber-600"><span id="streakCount">0</span> Hari</p>
-          </div>
-        </div>
-
-        <button onclick="doDailyCheckin()" id="checkinBtn" class="btn-cute px-5 py-3 text-sm flex items-center gap-2">
-          <span>✨</span> Absen Hari Ini
-        </button>
-
-        <div id="cloudStatus" class="text-xs px-3 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full">
-          ☁️ Cloud Connected
-        </div>
-      </div>
+  <div class="container">
+    <div class="header">
+      <h1>🍡 Mochi Study Space</h1>
+      <span id="status" class="status-badge">🔄 Connecting...</span>
     </div>
-  </header>
 
-  <!-- Navigation Tabs -->
-  <nav class="max-w-6xl mx-auto mb-6 flex overflow-x-auto gap-2 p-2 bg-white/60 rounded-3xl backdrop-blur-md border border-pink-100">
-    <button onclick="switchTab('plan')" id="tab-plan" class="nav-tab active px-5 py-2.5 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap">
-      📋 Study Plan (2 Jam)
-    </button>
-    <button onclick="switchTab('english')" id="tab-english" class="nav-tab px-5 py-2.5 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap">
-      🇬🇧 English Lab (30m)
-    </button>
-    <button onclick="switchTab('german')" id="tab-german" class="nav-tab px-5 py-2.5 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap">
-      🇩🇪 Deutsch Lab (30m)
-    </button>
-    <button onclick="switchTab('course')" id="tab-course" class="nav-tab px-5 py-2.5 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap">
-      🎓 Kursus Mandiri (30m)
-    </button>
-    <button onclick="switchTab('va')" id="tab-va" class="nav-tab px-5 py-2.5 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap">
-      💼 VA Practice (30m)
-    </button>
-    <button onclick="switchTab('analytics')" id="tab-analytics" class="nav-tab px-5 py-2.5 rounded-2xl font-bold text-sm transition-all flex items-center gap-2 whitespace-nowrap">
-      📊 Analytics
-    </button>
-  </nav>
+    <div class="input-group">
+      <input type="text" id="taskInput" placeholder="Tambah tugas baru..." onkeypress="handleKeyPress(event)">
+      <button onclick="addTask()">Tambah</button>
+    </div>
 
-  <!-- MAIN CONTENT CONTAINER -->
-  <main class="max-w-6xl mx-auto">
+    <ul id="taskList"></ul>
+  </div>
 
-    <!-- 1. STUDY PLAN TAB -->
-    <section id="sec-plan" class="tab-content block">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="card-cute p-6 md:col-span-2">
-          <h2 class="text-xl font-bold text-darkPink mb-4 flex items-center gap-2">
-            <span>⏱️</span> Target Rutinitas Belajar (Total: 2 Jam)
-          </h2>
-          <div class="space-y-3">
-            <label class="flex items-center justify-between p-3 bg-white rounded-2xl border border-pink-100 cursor-pointer hover:bg-pink-50/50">
-              <div class="flex items-center gap-3">
-                <input type="checkbox" id="chk-inggris" onchange="toggleTask('chk-inggris')" class="w-5 h-5 accent-pink-400 rounded-lg">
-                <span class="font-bold text-sm">🇬🇧 Bahasa Inggris B1 → B2 (Shadowing & Email)</span>
-              </div>
-              <span class="text-xs bg-pink-100 font-bold text-darkPink px-3 py-1 rounded-full">30 Menit</span>
-            </label>
+  <script>
+    // Config Supabase yang sudah diperbarui
+    const SUPABASE_URL = "https://bfahyqgmqxlktxlycknz.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_C2P-Tk-nHsPkssgkqMVvCQ_1mc02DiD";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            <label class="flex items-center justify-between p-3 bg-white rounded-2xl border border-pink-100 cursor-pointer hover:bg-pink-50/50">
-              <div class="flex items-center gap-3">
-                <input type="checkbox" id="chk-jerman" onchange="toggleTask('chk-jerman')" class="w-5 h-5 accent-pink-400 rounded-lg">
-                <span class="font-bold text-sm">🇩🇪 Bahasa Jerman A1 (Nicos Weg / Grammar)</span>
-              </div>
-              <span class="text-xs bg-purple-100 font-bold text-cutePurple px-3 py-1 rounded-full">30 Menit</span>
-            </label>
+    let tasks = [];
 
-            <label class="flex items-center justify-between p-3 bg-white rounded-2xl border border-pink-100 cursor-pointer hover:bg-pink-50/50">
-              <div class="flex items-center gap-3">
-                <input type="checkbox" id="chk-kursus" onchange="toggleTask('chk-kursus')" class="w-5 h-5 accent-pink-400 rounded-lg">
-                <span class="font-bold text-sm">🎓 Kursus Mandiri pilihanmu</span>
-              </div>
-              <span class="text-xs bg-emerald-100 font-bold text-emerald-700 px-3 py-1 rounded-full">30 Menit</span>
-            </label>
-
-            <label class="flex items-center justify-between p-3 bg-white rounded-2xl border border-pink-100 cursor-pointer hover:bg-pink-50/50">
-              <div class="flex items-center gap-3">
-                <input type="checkbox" id="chk-va" onchange="toggleTask('chk-va')" class="w-5 h-5 accent-pink-400 rounded-lg">
-                <span class="font-bold text-sm">💼 Praktek Simulasi Virtual Assistant</span>
-              </div>
-              <span class="text-xs bg-blue-100 font-bold text-blue-700 px-3 py-1 rounded-full">30 Menit</span>
-            </label>
-          </div>
-
-          <div class="mt-6">
-            <div class="flex justify-between text-xs font-bold text-cuteText mb-2">
-              <span>Progress Belajar Hari Ini</span>
-              <span id="dailyProgressText">0 / 2 Jam (0%)</span>
-            </div>
-            <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden p-0.5">
-              <div id="dailyProgressBar" class="bg-gradient-to-r from-pink-300 to-pastelPinkDark h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Timer Pomodoro -->
-        <div class="card-cute p-6 flex flex-col items-center justify-center text-center">
-          <h3 class="font-bold text-darkPink mb-1">⏱️ Timer Sesi 30 Menit</h3>
-          <p class="text-xs text-gray-500 mb-4">Fokus tanpa distraksi!</p>
-
-          <div class="w-36 h-36 rounded-full bg-pastelPink/40 border-4 border-pastelPinkDark flex items-center justify-center my-2 shadow-inner">
-            <span id="timerDisplay" class="text-3xl font-extrabold text-darkPink font-mono">30:00</span>
-          </div>
-
-          <div class="flex gap-2 mt-4">
-            <button onclick="startTimer()" class="btn-cute px-5 py-2 text-xs">Start</button>
-            <button onclick="pauseTimer()" class="bg-pastelPurple px-4 py-2 rounded-full text-xs font-bold text-cutePurple">Pause</button>
-            <button onclick="resetTimer()" class="bg-gray-200 px-4 py-2 rounded-full text-xs font-bold text-gray-600">Reset</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. ENGLISH LEARNING LAB -->
-    <section id="sec-english" class="tab-content hidden space-y-6">
-      <div class="card-cute p-6">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold text-darkPink">🇬🇧 English Learning Lab (B1 → B2)</h2>
-          <a href="https://www.bbc.co.uk/learningenglish/" target="_blank" class="text-xs btn-cute px-4 py-2 flex items-center gap-1">📺 BBC Learning English ↗</a>
-        </div>
-
-        <div class="bg-white p-4 rounded-2xl border border-pink-100 mb-6">
-          <h3 class="font-bold text-sm text-purple-700 mb-2">🗣️ Interactive Shadowing Practice</h3>
-          <div class="space-y-2">
-            <div class="p-3 bg-pink-50/50 rounded-xl flex items-center justify-between">
-              <div>
-                <p class="text-sm font-semibold">"I would be happy to assist you with scheduling that meeting."</p>
-                <p class="text-xs text-gray-500">Arti: Saya dengan senang hati membantu Anda menjadwalkan rapat tersebut.</p>
-              </div>
-              <button onclick="speakText('I would be happy to assist you with scheduling that meeting.')" class="bg-pink-200 p-2 rounded-full hover:bg-pink-300">🔊</button>
-            </div>
-            <div class="p-3 bg-pink-50/50 rounded-xl flex items-center justify-between">
-              <div>
-                <p class="text-sm font-semibold">"Please find the attached document for your review."</p>
-                <p class="text-xs text-gray-500">Arti: Silakan cek dokumen terlampir untuk Anda tinjau.</p>
-              </div>
-              <button onclick="speakText('Please find the attached document for your review.')" class="bg-pink-200 p-2 rounded-full hover:bg-pink-300">🔊</button>
-            </div>
-          </div>
-        </div>
-
-        <h3 class="font-bold text-sm text-darkPink mb-3">🎴 Flashcard Vocab B2</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div onclick="this.classList.toggle('flipped')" class="flashcard card-cute p-6 cursor-pointer text-center h-32 flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-100">
-            <div class="flashcard-inner w-full">
-              <div class="flashcard-front font-bold text-base text-darkPink">Prioritize</div>
-              <div class="flashcard-back text-xs font-semibold text-cuteText">Memprioritaskan / Menentukan skala prioritas</div>
-            </div>
-          </div>
-          <div onclick="this.classList.toggle('flipped')" class="flashcard card-cute p-6 cursor-pointer text-center h-32 flex items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100">
-            <div class="flashcard-inner w-full">
-              <div class="flashcard-front font-bold text-base text-cutePurple">Collaborate</div>
-              <div class="flashcard-back text-xs font-semibold text-cuteText">Bekerja sama / Bekerja dalam tim</div>
-            </div>
-          </div>
-          <div onclick="this.classList.toggle('flipped')" class="flashcard card-cute p-6 cursor-pointer text-center h-32 flex items-center justify-center bg-gradient-to-br from-mint-100 to-yellow-100">
-            <div class="flashcard-inner w-full">
-              <div class="flashcard-front font-bold text-base text-emerald-700">Efficient</div>
-              <div class="flashcard-back text-xs font-semibold text-cuteText">Efisien / Tepat guna tanpa buang waktu</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. DEUTSCH LEARNING LAB -->
-    <section id="sec-german" class="tab-content hidden space-y-6">
-      <div class="card-cute p-6">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold text-cutePurple">🇩🇪 Deutsch Learning Lab (A1)</h2>
-          <a href="https://learngerman.dw.com/de/nicos-weg/c-36519789" target="_blank" class="text-xs bg-purple-200 hover:bg-purple-300 px-4 py-2 rounded-full font-bold text-cutePurple">📺 Nicos Weg (DW) ↗</a>
-        </div>
-
-        <div class="bg-white p-5 rounded-2xl border border-purple-100 mb-6">
-          <h3 class="font-bold text-sm text-cutePurple mb-2">🧩 Mini Quiz: Der, Die, atau Das?</h3>
-          <div class="space-y-4">
-            <div class="p-3 bg-purple-50/50 rounded-xl">
-              <p class="text-sm font-bold mb-2">1. ___ Tisch (Meja)</p>
-              <div class="flex gap-2">
-                <button onclick="checkAnswer(this, true)" class="px-3 py-1 bg-white border border-purple-200 rounded-lg text-xs font-bold hover:bg-purple-100">der</button>
-                <button onclick="checkAnswer(this, false)" class="px-3 py-1 bg-white border border-purple-200 rounded-lg text-xs font-bold hover:bg-purple-100">die</button>
-                <button onclick="checkAnswer(this, false)" class="px-3 py-1 bg-white border border-purple-200 rounded-lg text-xs font-bold hover:bg-purple-100">das</button>
-              </div>
-            </div>
-            <div class="p-3 bg-purple-50/50 rounded-xl">
-              <p class="text-sm font-bold mb-2">2. ___ Frau (Wanita)</p>
-              <div class="flex gap-2">
-                <button onclick="checkAnswer(this, false)" class="px-3 py-1 bg-white border border-purple-200 rounded-lg text-xs font-bold hover:bg-purple-100">der</button>
-                <button onclick="checkAnswer(this, true)" class="px-3 py-1 bg-white border border-purple-200 rounded-lg text-xs font-bold hover:bg-purple-100">die</button>
-                <button onclick="checkAnswer(this, false)" class="px-3 py-1 bg-white border border-purple-200 rounded-lg text-xs font-bold hover:bg-purple-100">das</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. KURSUS MANDIRI TAB -->
-    <section id="sec-course" class="tab-content hidden space-y-6">
-      <div class="card-cute p-6">
-        <h2 class="text-xl font-bold text-emerald-700 mb-2">🎓 Target & Modul Kursus Mandiri</h2>
-        <p class="text-xs text-gray-600 mb-6">Catat progres kursus mandirimu di sini!</p>
-
-        <div class="bg-white p-4 rounded-2xl border border-emerald-100 mb-6 space-y-3">
-          <div>
-            <label class="block text-xs font-bold text-gray-600 mb-1">Nama Kursus:</label>
-            <input type="text" id="courseNameInput" placeholder="Misal: Working as a Virtual Assistant" oninput="saveDataToCloud()" class="w-full p-2.5 bg-emerald-50/40 border border-emerald-200 rounded-xl text-sm font-semibold">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-600 mb-1">Target / Goal Utama:</label>
-            <input type="text" id="courseGoalInput" placeholder="Misal: Paham cara kelola inbox email" oninput="saveDataToCloud()" class="w-full p-2.5 bg-emerald-50/40 border border-emerald-200 rounded-xl text-sm font-semibold">
-          </div>
-        </div>
-
-        <div>
-          <div class="flex justify-between items-center mb-3">
-            <h3 class="font-bold text-sm text-emerald-800">📋 Daftar Modul:</h3>
-            <button onclick="addCourseModule()" class="text-xs bg-emerald-200 hover:bg-emerald-300 font-bold px-3 py-1.5 rounded-xl text-emerald-800">+ Tambah Modul</button>
-          </div>
-          <div id="courseModuleList" class="space-y-2"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. VA PRACTICE TAB -->
-    <section id="sec-va" class="tab-content hidden space-y-6">
-      <div class="card-cute p-6">
-        <h2 class="text-xl font-bold text-blue-700 mb-4">💼 Virtual Assistant Practice Lab</h2>
-        <div class="bg-white p-4 rounded-2xl border border-blue-100 mb-6">
-          <h3 class="font-bold text-sm text-blue-800 mb-2">✉️ Email Drafting Exercise</h3>
-          <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200 text-xs font-mono text-gray-700 relative">
-            <button onclick="navigator.clipboard.writeText(this.nextElementSibling.innerText); alert('Template tersalin!')" class="absolute top-2 right-2 bg-blue-200 px-2 py-1 rounded text-xs font-bold">Copy</button>
-            <span>Subject: Weekly Administrative Summary & Updates<br><br>Hi [Client Name],<br><br>I hope you are having a productive week! Here is a brief update on tasks completed...</span>
-          </div>
-        </div>
-        <div>
-          <h3 class="font-bold text-sm text-blue-800 mb-2">📝 Catatan & Jurnal Latihan VA</h3>
-          <textarea id="vaJournalText" oninput="saveDataToCloud()" rows="4" placeholder="Tuliskan catatan latihan VA kamu di sini..." class="w-full p-3 bg-white border border-blue-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. ANALYTICS TAB -->
-    <section id="sec-analytics" class="tab-content hidden space-y-6">
-      <div class="card-cute p-6">
-        <h2 class="text-xl font-bold text-darkPink mb-4">📊 Analisis Progress Belajar</h2>
-        <div class="max-w-md mx-auto">
-          <canvas id="progressChart"></canvas>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FIREBASE SDK & APP LOGIC -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // Konfigurasi Firebase Project Rerie
-    const firebaseConfig = {
-      apiKey: "AIzaSyCNan01ZDXtmDjx6VutNobsV0NoutuXCd0",
-      authDomain: "mochi-study-nook.firebaseapp.com",
-      projectId: "mochi-study-nook",
-      storageBucket: "mochi-study-nook.firebasestorage.app",
-      messagingSenderId: "674987379127",
-      appId: "1:674987379127:web:613470712285d5c714c032"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const docId = "user_rerie_main";
-
-    // Helper untuk mengambil format tanggal persis Timezone Jakarta (WIB)
-    function getJakartaDateString() {
-      return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' }); // Output: YYYY-MM-DD
-    }
-
-    let appState = {
-      streak: 0,
-      lastCheckinDate: null,
-      lastActiveDate: getJakartaDateString(),
-      tasks: { 'chk-inggris': false, 'chk-jerman': false, 'chk-kursus': false, 'chk-va': false },
-      courseName: "",
-      courseGoal: "",
-      courseModules: [
-        { text: "Module 1: Introduction to Virtual Assistance", done: false },
-        { text: "Module 2: Client Communication Skills", done: false }
-      ],
-      vaJournal: ""
-    };
-
-    async function loadDataFromCloud() {
+    // Initialize & Fetch Data
+    async function init() {
+      const statusEl = document.getElementById('status');
       try {
-        const snap = await getDoc(doc(db, "studyData", docId));
-        if (snap.exists()) {
-          const cloudData = snap.data();
-          appState = Object.assign(appState, cloudData);
+        const { data, error } = await supabaseClient
+          .from('user_data')
+          .select('data')
+          .eq('id', 'mochi_tasks')
+          .single();
 
-          // Automated Day Reset Logic berbasis Waktu Jakarta (WIB)
-          const todayJakarta = getJakartaDateString();
-          if (appState.lastActiveDate !== todayJakarta) {
-            appState.tasks = { 'chk-inggris': false, 'chk-jerman': false, 'chk-kursus': false, 'chk-va': false };
-            appState.lastActiveDate = todayJakarta;
-            await saveDataToCloud();
-          }
-        }
-        syncUI();
-      } catch (err) {
-        console.error("Gagal memuat cloud:", err);
-        document.getElementById('cloudStatus').innerText = "⚠️ Offline Mode";
-        document.getElementById('cloudStatus').className = "text-xs px-3 py-1 bg-amber-100 text-amber-800 font-bold rounded-full";
-      }
-    }
-
-    async function saveDataToCloud() {
-      try {
-        await setDoc(doc(db, "studyData", docId), appState);
-      } catch (err) {
-        console.error("Gagal menyimpan ke cloud:", err);
-      }
-      updateDailyProgress();
-    }
-
-    window.saveDataToCloud = saveDataToCloud;
-
-    function syncUI() {
-      document.getElementById('streakCount').innerText = appState.streak;
-      document.getElementById('courseNameInput').value = appState.courseName || "";
-      document.getElementById('courseGoalInput').value = appState.courseGoal || "";
-      document.getElementById('vaJournalText').value = appState.vaJournal || "";
-
-      Object.keys(appState.tasks).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.checked = appState.tasks[id];
-      });
-
-      renderCourseModules();
-      updateDailyProgress();
-    }
-
-    // Tab Switcher
-    window.switchTab = function(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
-      
-      document.getElementById('sec-' + tabId).classList.remove('hidden');
-      document.getElementById('tab-' + tabId).classList.add('active');
-
-      if (tabId === 'analytics') renderChart();
-    }
-
-    // Daily Checkin dengan Waktu Jakarta
-    window.doDailyCheckin = async function() {
-      const todayJakarta = getJakartaDateString();
-      if (appState.lastCheckinDate === todayJakarta) {
-        alert("Kamu sudah melakukan absen hari ini! ✨");
-        return;
-      }
-      appState.streak += 1;
-      appState.lastCheckinDate = todayJakarta;
-      document.getElementById('streakCount').innerText = appState.streak;
-      await saveDataToCloud();
-      alert("Hore! Absen berhasil. Streak kamu: " + appState.streak + " hari! 🔥");
-    }
-
-    window.toggleTask = async function(id) {
-      const el = document.getElementById(id);
-      if (el) {
-        appState.tasks[id] = el.checked;
-        await saveDataToCloud();
-      }
-    }
-
-    function updateDailyProgress() {
-      const ids = ['chk-inggris', 'chk-jerman', 'chk-kursus', 'chk-va'];
-      let done = 0;
-      ids.forEach(id => { if (appState.tasks[id]) done++; });
-      const hours = (done * 0.5).toFixed(1);
-      const percent = Math.round((done / 4) * 100);
-
-      document.getElementById('dailyProgressText').innerText = `${hours} / 2 Jam (${percent}%)`;
-      document.getElementById('dailyProgressBar').style.width = percent + '%';
-    }
-
-    window.renderCourseModules = function() {
-      const container = document.getElementById('courseModuleList');
-      container.innerHTML = '';
-      appState.courseModules.forEach((mod, index) => {
-        const div = document.createElement('div');
-        div.className = "flex items-center justify-between p-3 bg-white rounded-xl border border-emerald-100";
-        div.innerHTML = `
-          <label class="flex items-center gap-3 cursor-pointer flex-grow">
-            <input type="checkbox" ${mod.done ? 'checked' : ''} onchange="toggleModule(${index})" class="w-4 h-4 accent-emerald-500 rounded">
-            <span class="text-xs font-semibold ${mod.done ? 'line-through text-gray-400' : 'text-gray-700'}">${mod.text}</span>
-          </label>
-          <button onclick="removeModule(${index})" class="text-xs text-red-400 font-bold px-2 py-1">Hapus</button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    window.addCourseModule = async function() {
-      const text = prompt("Masukkan nama modul / bab kursus:");
-      if (text) {
-        appState.courseModules.push({ text: text, done: false });
-        await saveDataToCloud();
-        renderCourseModules();
-      }
-    }
-
-    window.toggleModule = async function(index) {
-      appState.courseModules[index].done = !appState.courseModules[index].done;
-      await saveDataToCloud();
-      renderCourseModules();
-    }
-
-    window.removeModule = async function(index) {
-      appState.courseModules.splice(index, 1);
-      await saveDataToCloud();
-      renderCourseModules();
-    }
-
-    window.speakText = function(text) {
-      if ('speechSynthesis' in window) {
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'en-US';
-        window.speechSynthesis.speak(msg);
-      }
-    }
-
-    window.checkAnswer = function(btn, isCorrect) {
-      if (isCorrect) {
-        btn.className = "px-3 py-1 bg-emerald-400 text-white rounded-lg text-xs font-bold";
-        alert("Richtig! (Benar sekali) 🎉");
-      } else {
-        btn.className = "px-3 py-1 bg-red-400 text-white rounded-lg text-xs font-bold";
-        alert("Falsch! Coba lagi yaa! 💪");
-      }
-    }
-
-    // Timer
-    let timerInterval = null;
-    let timerSeconds = 1800;
-    window.startTimer = function() {
-      if (timerInterval) return;
-      timerInterval = setInterval(() => {
-        if (timerSeconds > 0) {
-          timerSeconds--;
-          updateTimerDisplay();
+        if (error && error.code !== 'PGRST116') {
+          console.error("Error loading tasks:", error);
+          statusEl.innerText = "❌ Sync Error";
+          statusEl.classList.remove('connected');
         } else {
-          clearInterval(timerInterval);
-          timerInterval = null;
-          alert("Waktu sesi 30 menit selesai! Istirahat sejenak yuk! 🌸");
+          if (data && data.data) {
+            tasks = data.data;
+          }
+          statusEl.innerText = "☁️ Cloud Connected";
+          statusEl.classList.add('connected');
+          renderTasks();
         }
-      }, 1000);
-    }
-    window.pauseTimer = function() { clearInterval(timerInterval); timerInterval = null; }
-    window.resetTimer = function() { window.pauseTimer(); timerSeconds = 1800; updateTimerDisplay(); }
-    function updateTimerDisplay() {
-      const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
-      const s = (timerSeconds % 60).toString().padStart(2, '0');
-      document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+      } catch (err) {
+        console.error(err);
+        statusEl.innerText = "❌ Offline";
+      }
+
+      // Realtime listener
+      supabaseClient
+        .channel('public:user_data')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'user_data' }, payload => {
+          if (payload.new && payload.new.id === 'mochi_tasks') {
+            tasks = payload.new.data;
+            renderTasks();
+          }
+        })
+        .subscribe();
     }
 
-    // Chart
-    let myChart = null;
-    function renderChart() {
-      const ctx = document.getElementById('progressChart').getContext('2d');
-      if (myChart) myChart.destroy();
-      const ids = ['chk-inggris', 'chk-jerman', 'chk-kursus', 'chk-va'];
-      const data = ids.map(id => appState.tasks[id] ? 100 : 0);
+    async function saveData() {
+      const statusEl = document.getElementById('status');
+      statusEl.innerText = "⏳ Saving...";
+      
+      const { error } = await supabaseClient
+        .from('user_data')
+        .upsert({ id: 'mochi_tasks', data: tasks });
 
-      myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['English B2', 'Deutsch A1', 'Kursus Mandiri', 'Praktek VA'],
-          datasets: [{
-            label: '% Selesai Hari Ini',
-            data: data,
-            backgroundColor: ['#FFB6C1', '#E6E6FA', '#A7F3D0', '#BAE6FD'],
-            borderRadius: 12
-          }]
-        },
-        options: { scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
+      if (error) {
+        console.error("Error saving:", error);
+        statusEl.innerText = "❌ Save Failed";
+        statusEl.classList.remove('connected');
+      } else {
+        statusEl.innerText = "☁️ Cloud Connected";
+        statusEl.classList.add('connected');
+      }
+    }
+
+    function renderTasks() {
+      const list = document.getElementById('taskList');
+      list.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        if (task.completed) li.classList.add('completed');
+
+        li.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${index})">
+            <span>${escapeHtml(task.text)}</span>
+          </div>
+          <button class="delete-btn" onclick="deleteTask(${index})">✕</button>
+        `;
+        list.appendChild(li);
       });
     }
 
-    window.onload = loadDataFromCloud;
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      tasks.push({ text, completed: false });
+      input.value = '';
+      renderTasks();
+      saveData();
+    }
+
+    function toggleTask(index) {
+      tasks[index].completed = !tasks[index].completed;
+      renderTasks();
+      saveData();
+    }
+
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      renderTasks();
+      saveData();
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') addTask();
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // Run on startup
+    init();
   </script>
 </body>
 </html>
